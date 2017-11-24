@@ -1,16 +1,18 @@
 from math import pi, cos, sin
 import csv
 
+from robot import Robot
 from scanning_sonar import ScanningSonar
-import ev3dev.ev3 as ev3
-
 
 __author__ = 'Xomak'
 
-sonar = ev3.UltrasonicSensor('in2')
-motor = ev3.MediumMotor('outA')
+robot = Robot('10.42.0.3')
+robot.connect()
 
-params = ScanningSonar.ScanParams(0, pi, 0.05, 0.7)
+sonar = robot.ev3.UltrasonicSensor('in2')
+motor = robot.ev3.MediumMotor('outA')
+
+params = ScanningSonar.ScanParams(0, pi, 0.05, 0.2)
 
 scanner = ScanningSonar(motor, sonar, params)
 data = scanner.scan()
