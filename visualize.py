@@ -1,15 +1,11 @@
-import csv
 import matplotlib.pyplot as plt
+import numpy as np
 
 __author__ = 'Xomak'
 
-with open('map.csv', 'r', newline='') as csvfile:
-    cloud_reader = csv.reader(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-    x = []
-    y = []
-    for row in cloud_reader:
-        x.append(row[2])
-        y.append(row[3])
 
-plt.plot(x, y, 'ro')
+data = np.loadtxt('map.csv', delimiter=',')
+data = data[data[:, 0].argsort()]
+
+plt.plot(data[:, 2], data[:, 3], 'ro')
 plt.show()
