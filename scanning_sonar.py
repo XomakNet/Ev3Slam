@@ -7,6 +7,20 @@ import ev3dev.ev3 as ev3
 __author__ = 'Xomak'
 
 
+class FloatRange:
+
+    def __init__(self, start, stop, step):
+        self.step = step
+        self.stop = stop
+        self.start = start
+
+    def __iter__(self):
+        current = self.start
+        while current < self.stop:
+            yield current
+            current += self.step
+
+
 class ScanningSonar:
 
     ScanParams = namedtuple('ScanParams', ('start_position', 'end_position', 'step', 'scan_time'))
@@ -24,6 +38,7 @@ class ScanningSonar:
 
     def _move(self, radians: float):
         tachos = radians / (2 * pi) * self.motor.count_per_rot
+        self.motor.speed_sp = 400
         self.motor.run_to_abs_pos(position_sp=tachos, stop_action='hold')
 
     def _blocking_move(self, radians: float):
@@ -43,9 +58,9 @@ class ScanningSonar:
             self._blocking_move(self.range.start_position)
         if self.current_angle == self.range.end_position:
             # Inversed direction
-            scan_range = range(self.range.end_position, self.range.start_position, -self.range.step)
+            scan_range = FloatRange(self.range.end_position, self.range.start_position, -self.range.step)
         else:
-            scan_range = range(self.range.start_position, self.range.end_position, self.range.step)
+            scan_range = FloatRange(self.range.start_position, self.range.end_position, self.range.step)
 
         for angle in scan_range:
             self._blocking_move(angle)
