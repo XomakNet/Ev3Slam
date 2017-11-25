@@ -1,22 +1,22 @@
 from odometry import Odometry
-from robot import Robot
+from ev3dev import ev3 as ev3
 from controller import WheeledRobotController
 from math import pi
 
 host = '169.254.143.159'
 
-robot = Robot(host)
-robot.connect()
+# robot = Robot(host)
+# robot.connect()
 
-odometry = Odometry(robot.get_ev3().LargeMotor("outC"),
-                    robot.get_ev3().LargeMotor("outB"),
+odometry = Odometry(ev3.LargeMotor("outC"),
+                    ev3.LargeMotor("outB"),
                     6.0,
                     2.7,
                     6.0,
                     2 * pi / 5.0)
 
-controller = WheeledRobotController(robot.get_ev3().UltrasonicSensor("in2"),
-                                    robot.get_ev3().UltrasonicSensor("in4"),
+controller = WheeledRobotController(ev3.UltrasonicSensor("in2"),
+                                    ev3.UltrasonicSensor("in4"),
                                     odometry)
 controller.run_closed_loop(kp=1.0,
                            ki=0.0,
