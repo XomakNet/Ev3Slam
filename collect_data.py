@@ -21,7 +21,8 @@ data = scanner.scan()
 with open('map.csv', 'w', newline='') as csvfile:
     cloud_writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
 
-    for angle, distance in data.items():
+    for row in data:
+        angle, distance = row[0], row[1]
         x = cos(angle) * distance
         y = sin(angle) * distance
         if distance < 100:
