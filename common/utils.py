@@ -1,9 +1,12 @@
 import json
 import time
+from collections import namedtuple
 
 import ev3dev.ev3 as ev3
 
 __author__ = 'Xomak'
+
+Pose = namedtuple('Pose', ('x', 'y', 'theta'))
 
 
 def get_json_from_file(file):

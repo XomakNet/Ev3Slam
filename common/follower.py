@@ -4,6 +4,7 @@ import ev3dev.ev3 as ev3
 
 from common.utils import get_json_from_file
 from common.pid import PIDRegulator
+from rotater import Rotater
 
 __author__ = 'Xomak'
 
@@ -21,6 +22,7 @@ class Follower:
         self.right_motor = right_motor
         self.left_motor = left_motor
         self.pid_and_speed_params = None
+        self.rotater = Rotater(self.left_motor, self.right_motor)
         self._update_pid_params()
 
     def _limit_speed(self, speed):
@@ -42,9 +44,11 @@ class Follower:
     def control_cycle(self):
         error = self.line_detector.get_error()
         delta = self.pid_regulator.proceed(error)
-
-        self.left_motor.run_forever(speed_sp=self._limit_speed(self.pid_and_speed_params['speed'] + delta))
-        self.right_motor.run_forever(speed_sp=self._limit_speed(self.pid_and_speed_params['speed'] - delta))
+        base_speed = self._limit_speed(self.pid_and_speed_params['speed'])
+        self.rotater.set_wheel_speeds(self._limit_speed(base_speed + delta), self._limit_speed(base_speed - delta))
+        print(self.rotater.pose)
+        #self.left_motor.run_forever(speed_sp=self._limit_speed(self.pid_and_speed_params['speed'] + delta))
+        #self.right_motor.run_forever(speed_sp=self._limit_speed(self.pid_and_speed_params['speed'] - delta))
 
     def follow(self):
         print("Main cycle started...")

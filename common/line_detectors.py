@@ -12,3 +12,9 @@ class TwoSensorsPositionDetector:
         error = self.sensors['right'].distance_centimeters - self.sensors['left'].distance_centimeters
 
         return error
+
+    def get_right(self):
+        return self.sensors['right'].distance_centimeters
+
+    def get_left(self):
+        return self.sensors['left'].distance_centimeters
