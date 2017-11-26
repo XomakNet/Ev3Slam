@@ -13,24 +13,28 @@ class MapBuilder:
     SonarsData = namedtuple('SonarsData', ('left', 'right'))
     Point = namedtuple('Point', ('x', 'y'))
 
-    def rotate_point_over(self, point_to_rotate: Point, key_point: Point, angle: float):
+    @classmethod
+    def rotate_point_over(cls, point_to_rotate: Point, key_point: Point, angle: float):
 
-        point_to_rotate = self.Point(point_to_rotate.x - key_point.x,
-                                     point_to_rotate.y - key_point.y)
+        point_to_rotate = cls.Point(point_to_rotate.x - key_point.x,
+                                    point_to_rotate.y - key_point.y)
 
         c = cos(angle)
         s = sin(angle)
 
-        point_to_rotate = self.Point(point_to_rotate.x * c - point_to_rotate.y * s,
-                                     point_to_rotate.x * s + point_to_rotate.y * c)
+        point_to_rotate = cls.Point(point_to_rotate.x * c - point_to_rotate.y * s,
+                                    point_to_rotate.x * s + point_to_rotate.y * c)
 
-        point_to_rotate = self.Point(point_to_rotate.x + key_point.x,
-                                     point_to_rotate.y + key_point.y)
+        point_to_rotate = cls.Point(point_to_rotate.x + key_point.x,
+                                    point_to_rotate.y + key_point.y)
 
         return point_to_rotate
 
     def __init__(self):
         self.points = []
+
+    def push_point(self, point):
+        self.points.append(point)
 
     def push(self, position: Pose, sonars: SonarsData):
         #total_dst = sonars.left.x + sonars.right.x + 15

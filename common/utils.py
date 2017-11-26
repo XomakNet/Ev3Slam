@@ -8,6 +8,7 @@ __author__ = 'Xomak'
 
 Pose = namedtuple('Pose', ('x', 'y', 'theta'))
 
+Point = namedtuple('Point', ('x', 'y'))
 
 def get_json_from_file(file):
     with open(file) as f:

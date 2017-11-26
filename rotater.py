@@ -25,15 +25,24 @@ class Rotater:
         self.speed = speed
         self.right_motor = right_motor
         self.left_motor = left_motor
+        self._pose = None
+        self.last_update = None
         self.pose = self.Pose(0, 0, -pi/2)
-        self.last_update = time.time()
         self.control_input = None
+
+    @property
+    def pose(self):
+        return self._pose
+
+    @pose.setter
+    def pose(self, pose):
+        self.last_update = time.time()
+        self._pose = pose
 
     def recalculate_pose(self, new_control_input):
         current_time = time.time()
         if self.control_input is not None:
             self.pose = self.transition_function(self.pose, self.control_input, current_time - self.last_update)
-        self.last_update = current_time
         self.control_input = new_control_input
 
     def set_wheel_speeds(self, left_speed, right_speed):
